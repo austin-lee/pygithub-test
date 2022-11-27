@@ -11,13 +11,16 @@ pipeline{
     stages {
         //Excute Script
         stage('Execute Script') {
+            environment {
+                GITHUB_ACCESS_TOKEN = credentials("github-access-token")
+            }
             steps{
                 echo 'Execute Script'
                 script {
                     sh 'python3 -V'
                     sh """
                         pip3 install PyGithub
-                        python3 python_ci.py --access-token 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 --repo-name austin-lee/pygithub-test --accounts bot1 bot2 --pr-num 6
+                        python3 python_ci.py --access-token ${env.GITHUB_ACCESS_TOKEN} --repo-name austin-lee/pygithub-test --accounts bot1 bot2 --pr-num 6
                        """
                 }
             }
