@@ -14,7 +14,7 @@ pipeline{
                 echo 'Execute Script'
                 script {
                   sh """
-                    python /Users/austin.lee/Develop/line_test/python_project/python_ci.py --access-token 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 --repo-name austin-lee/pygithub-test --accounts bot1 bot2 --pr-num 6
+                    python3.9 /Users/austin.lee/Develop/line_test/python_project/python_ci.py --access-token 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 --repo-name austin-lee/pygithub-test --accounts bot1 bot2 --pr-num 6
                   """
                 }
                 post {
