@@ -6,10 +6,17 @@
  */
 
 pipeline{
-  agent {
-    docker {
-        image 'python:3.9.15-slim-bullseye'
-    }
+  agent any
+  triggers {
+    GenericTrigger(
+        causeString: 'Github Webhook',
+        genericVariables: [
+            [defaultValue: '', key: 'GITHUB_ACTION', regexpFilter: '', value: '$.action'],
+            [defaultValue: '', key: 'GITHUB_PROJECT', regexpFilter: '', value: '$.pull_request.base.repo.full_name'],
+            [defaultValue: '', key: 'GITHUB_PR_NUMBER', regexpFilter: '', value: '$.pull_request.number']
+        ],
+        token: 'jenkins-trigger'
+    )
   }
   stages {
     //Excute Script
@@ -18,7 +25,7 @@ pipeline{
         echo 'Execute Script'
         script{
           sh """
-            /usr/local/bin/python3.9 /Users/austin.lee/Develop/line_test/python_project/python_ci.py --access-token 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 --repo-name austin-lee/pygithub-test --accounts bot1 bot2 --pr-num 1
+            /usr/local/bin/python /Users/austin.lee/Develop/line_test/python_project/python_ci.py --access-token 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 --repo-name austin-lee/pygithub-test --accounts bot1 bot2 --pr-num 6
           """
         }
       }post{
