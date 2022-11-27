@@ -1,28 +1,36 @@
 /*
  * Jenkins File
- * Jenkins python, docker plugin install
- * python 3.9 기준 빌드이므로 docker image 는 python 3.9 로 설정
- * Jenkins 빌드 기준 설정 필요 (GitHub Pull Request Builder)
- * Stage 는 파라미터에 python 파일 실행하는 스크립트로 작성
+ * agent 는 any 로 되어 있으나, docker 를 이용하여 빌드 환경이 구성 가능합니다.
+ * Push Request 에 대한 설정은 GitHub Pull Request Builder 를 이용하여 구성을 하였습니다.
+ * Git repository 에 webhook 으로 http://{jenkins_url}/ghprbhook 설정을 하였습니다.
+ * pipeline 의 Stage 에 python 파일 실행하는 Script 로 작성하였고,
+ * python Script 에 사용되는 Argument 는 github pull reqeust builder 의 parameter 를 이용하여 생성하였습니다.
+ * accounts 의 경우, parameter 에 입력을 받도록 하였습니다.
  */
 
 pipeline{
     agent any
+    parameters {
+        text(
+            name: 'SKIP_ACCOUNT',
+            defaultValue: '''bot1
+bot2 ''',
+            description: 'This account approvals are not dismissed'
+        )
+    }
     stages {
         //Excute Script
         stage('Execute Script') {
             environment {
-                GITHUB_ACCESS_TOKEN = credentials("github-access-token")
+                GITHUB_ACCESS_TOKEN = credentials("${env.ghprbCredentialsId}")
             }
             steps{
                 echo 'Execute Script'
                 script {
-                    echo "${env.sha1}"
-                    echo "${env.ghprbPullId}"
-                    echo "${env.ghprbPullLink}"
+                    def skip_accounts = params.SKIP_ACCOUNT.replace("\n", " ")
                     sh """
                         pip3 install PyGithub
-                        python3 python_ci.py --access-token ${env.GITHUB_ACCESS_TOKEN} --repo-name austin-lee/pygithub-test --accounts bot1 bot2 --pr-num 6
+                        python3 python_ci.py --access-token ${env.GITHUB_ACCESS_TOKEN} --repo-name ${env.ghprbGhRepository} --accounts ${skip_accounts} --pr-num ${env.ghprbPullId}
                        """
                 }
             }
