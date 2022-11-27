@@ -14,7 +14,7 @@ pipeline{
         text(
             name: 'SKIP_ACCOUNT',
             defaultValue: '''bot1
-bot2 ''',
+bot2''',
             description: 'This account approvals are not dismissed'
         )
     }
