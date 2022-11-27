@@ -33,7 +33,7 @@ bot2 ''',
                     def skip_accounts = params.SKIP_ACCOUNT.replace("\n", " ")
                     sh """
                         pip3 install PyGithub
-                        python3 python_ci.py --access-token ${env.GITHUB_ACCESS_TOKEN} --repo-name ${env.ghprbGhRepository} --accounts ${skip_accounts} --pr-num ${env.ghprbPullId}
+                        python3 3-1.py --access-token ${env.GITHUB_ACCESS_TOKEN} --repo-name ${env.ghprbGhRepository} --accounts ${skip_accounts} --pr-num ${env.ghprbPullId}
                        """
                 }
             }
