@@ -17,7 +17,8 @@ pipeline{
             steps{
                 echo 'Execute Script'
                 script {
-                    echo '${.pull_request.number}'
+                    echo '${$.pull_request.number}'
+                    echo '${env.GITHUB_ACCESS_TOKEN}'
                     sh """
                         pip3 install PyGithub
                         python3 python_ci.py --access-token ${env.GITHUB_ACCESS_TOKEN} --repo-name austin-lee/pygithub-test --accounts bot1 bot2 --pr-num 6
