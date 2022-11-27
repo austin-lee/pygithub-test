@@ -7,7 +7,9 @@
  */
 
 pipeline{
-    agent any
+    agent {
+        docker { image 'python:3' }
+    }
     stages {
         //Excute Script
         stage('Execute Script') {
