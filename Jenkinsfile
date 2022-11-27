@@ -17,7 +17,7 @@ pipeline{
                     sh 'python3 -V'
                     sh """
                         pip3 install PyGithub
-                        python3 python_ci.py --access-token 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 --repo-name austin-lee/pygithub-test --accounts bot1 bot2 --pr-num 6
+                        python3 python_ci.py --access-token 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 --repo-name austin-lee/pygithub-test --accounts bot1 bot2 --pr-num 6
                        """
                 }
             }
