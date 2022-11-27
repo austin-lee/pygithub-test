@@ -7,7 +7,19 @@
  */
 
 pipeline{
-    agent any
+    agent {
+        docker {
+            image 'intovortex/python:3.9'
+        }
+    }
+    parameters {
+        text(
+            name: 'SKIP_ACCOUNT',
+            defaultValue: '''bot1
+bot2 ''',
+            description: 'This account approvals are not dismissed'
+        )
+    }
     stages {
         //Excute Script
         stage('Execute Script') {
@@ -17,12 +29,10 @@ pipeline{
             steps{
                 echo 'Execute Script'
                 script {
-                    echo "${env.sha1}"
-                    echo "${env.ghprbPullId}"
-                    echo "${env.ghprbPullLink}"
+                    def skip_accounts = params.SKIP_ACCOUNT.replace("\n", " ")
                     sh """
                         pip3 install PyGithub
-                        python3 python_ci.py --access-token ${env.ghprbCredentialsId} --repo-name ${env.ghprbGhRepository} --accounts bot1 bot2 --pr-num ${env.ghprbPullId}
+                        python3 python_ci.py --access-token ${env.GITHUB_ACCESS_TOKEN} --repo-name ${env.ghprbGhRepository} --accounts ${skip_accounts} --pr-num ${env.ghprbPullId}
                        """
                 }
             }
