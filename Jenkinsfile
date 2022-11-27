@@ -14,16 +14,11 @@ pipeline{
             steps{
                 echo 'Execute Script'
                 script {
-                    sh 'python3 -V'
+                    sh 'python3.9 -V'
 //                   sh """
 //                     pip install PyGithub
 //                     python3 python_ci.py --access-token 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 --repo-name austin-lee/pygithub-test --accounts bot1 bot2 --pr-num 6
 //                   """
-                }
-                post {
-                    failure {
-                      error 'This pipeline stops here...'
-                    }
                 }
             }
         }
