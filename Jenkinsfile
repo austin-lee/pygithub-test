@@ -6,6 +6,8 @@
  * pipeline 의 Stage 에 python 파일 실행하는 Script 로 작성하였고,
  * python Script 에 사용되는 Argument 는 github pull reqeust builder 의 parameter 를 이용하여 생성하였습니다.
  * accounts 의 경우, parameter 에 입력을 받도록 하였습니다.
+ * Refspec setting : +refs/pull/${ghprbPullId}/*:refs/remotes/origin/pr/${ghprbPullId}/*
+ * Branch Specifier setting : ${ghprbActualCommit}
  */
 
 pipeline{
