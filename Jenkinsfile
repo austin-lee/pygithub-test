@@ -12,7 +12,7 @@ pipeline{
         //Excute Script
         stage('Execute Script') {
             environment {
-                GITHUB_ACCESS_TOKEN = credentials("github-access-token")
+                GITHUB_ACCESS_TOKEN = credentials("${env.ghprbCredentialsId}")
             }
             steps{
                 echo 'Execute Script'
@@ -22,7 +22,7 @@ pipeline{
                     echo "${env.ghprbPullLink}"
                     sh """
                         pip3 install PyGithub
-                        python3 python_ci.py --access-token ${env.GITHUB_ACCESS_TOKEN} --repo-name austin-lee/pygithub-test --accounts bot1 bot2 --pr-num ${env.ghprbPullId}
+                        python3 python_ci.py --access-token ${env.ghprbCredentialsId} --repo-name ${env.ghprbGhRepository} --accounts bot1 bot2 --pr-num ${env.ghprbPullId}
                        """
                 }
             }
