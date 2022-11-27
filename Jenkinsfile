@@ -7,11 +7,7 @@
  */
 
 pipeline{
-    agent {
-        docker {
-            image 'intovortex/python:3.9'
-        }
-    }
+    agent any
     parameters {
         text(
             name: 'SKIP_ACCOUNT',
