@@ -6,6 +6,9 @@
  * pipeline 의 Stage 에 python 파일 실행하는 Script 로 작성하였고,
  * python Script 에 사용되는 Argument 는 github pull reqeust builder 의 parameter 를 이용하여 생성하였습니다.
  * accounts 의 경우, parameter 에 입력을 받도록 하였습니다.
+ * python script 실행 전, PyGithub Library 를 설치 후, 실행하도록 작성하였습니다.
+ * Refspec setting : +refs/pull/${ghprbPullId}/*:refs/remotes/origin/pr/${ghprbPullId}/*
+ * Branch Specifier setting : ${ghprbActualCommit}
  */
 
 pipeline{
@@ -14,8 +17,8 @@ pipeline{
         text(
             name: 'SKIP_ACCOUNT',
             defaultValue: '''bot1
-bot2''',
-            description: 'This account approvals are not dismissed'
+bot2 ''',
+            description: 'account info'
         )
     }
     stages {
@@ -30,7 +33,7 @@ bot2''',
                     def skip_accounts = params.SKIP_ACCOUNT.replace("\n", " ")
                     sh """
                         pip3 install PyGithub
-                        python3 python_ci.py --access-token ${env.GITHUB_ACCESS_TOKEN} --repo-name ${env.ghprbGhRepository} --accounts ${skip_accounts} --pr-num ${env.ghprbPullId}
+                        python3 3-1.py --access-token ${env.GITHUB_ACCESS_TOKEN} --repo-name ${env.ghprbGhRepository} --accounts ${skip_accounts} --pr-num ${env.ghprbPullId}
                        """
                 }
             }
